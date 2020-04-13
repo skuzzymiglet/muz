@@ -1,0 +1,14 @@
+#!/bin/sh 
+# vim: ft=sh
+
+case "$1" in 
+    next)
+        killall -HUP muz-core
+        ;;
+    kill)
+        killall muz-core
+        ;;
+    *)
+        ./muz-core
+        ;;
+esac

@@ -1,20 +1,22 @@
 #!/bin/sh
 # vim: ft=sh
 
-echo $$
+echo "pid: $$"
 
 MUSIC="$HOME/music"
 
 play(){
-    FILE=$(find "$MUSIC" | shuf -n1) 
-    mpv "$FILE"&
+    FILE=$(find "$MUSIC" -not -path '$FILE' | shuf -n1) 
+    mpv --no-video "$FILE"&
     PLAYER_PID=$!
+    notify-send "Playing $(basename "$FILE")" 
 }
 
 play
 
 while :
 do
-    trap 'kill $PLAYER_PID && play ' USR1
+    trap 'kill $PLAYER_PID && play ' HUP
+    trap 'kill $PLAYER_PID; exit' TERM
     sleep 1
 done
