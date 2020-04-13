@@ -14,6 +14,12 @@ git clone https://github.com/skuzzymiglet/muz
 ```
 (or with any directory in your path)
 
+## Usage
+
+Start it with `muz`
+Next song: `muz next`
+Stop: `muz kill`
+
 ## Todo
 
 - [X] Play music

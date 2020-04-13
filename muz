@@ -9,6 +9,6 @@ case "$1" in
         killall muz-core
         ;;
     *)
-        ./muz-core
+        ./muz-core > /dev/null 2> /dev/null &
         ;;
 esac
