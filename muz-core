@@ -1,0 +1,20 @@
+#!/bin/sh
+# vim: ft=sh
+
+echo $$
+
+MUSIC="$HOME/music"
+
+play(){
+    FILE=$(find "$MUSIC" | shuf -n1) 
+    mpv "$FILE"&
+    PLAYER_PID=$!
+}
+
+play
+
+while :
+do
+    trap 'kill $PLAYER_PID && play ' USR1
+    sleep 1
+done
