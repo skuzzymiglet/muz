@@ -6,7 +6,7 @@ echo "pid: $$"
 MUSIC="$HOME/music"
 
 play(){
-    FILE=$(find "$MUSIC" -not -path '$FILE' | shuf -n1) 
+    FILE=$(find "$MUSIC" -not -path "$FILE" | shuf -n1) 
     mpv --no-video "$FILE"&
     PLAYER_PID=$!
     notify-send "Playing $(basename "$FILE")" 
