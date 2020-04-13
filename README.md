@@ -17,7 +17,9 @@ git clone https://github.com/skuzzymiglet/muz
 ## Usage
 
 Start it with `muz`
+
 Next song: `muz next`
+
 Stop: `muz kill`
 
 ## Todo
