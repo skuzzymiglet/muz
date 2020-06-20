@@ -3,7 +3,6 @@
 
 echo "pid: $$"
 stat /tmp/muz-playerpid && PLAYER_PID=$(cat /tmp/muz-playerpid)
-echo $$ > /tmp/muz-pid
 
 MUSIC="$HOME/music"
 
@@ -16,12 +15,17 @@ resume(){
 }
 
 playnew(){
-    FILE=$(find "$MUSIC" -type f -not -path "$FILE" | shuf -n1)
-    ffplay -nodisp "$FILE"&
+    ffplay -nodisp "$1"&
     export PLAYER_PID=$!
     echo $PLAYER_PID > /tmp/muz-playerpid
     notify-send "Playing $(basename "$FILE")" 
 }
+
+playfifo(){
+    playnew $(head -n1 $1) && sed -i 1d $1
+}
+
+[[ -s $1 ]] && playfifo $1
 
 case "$1" in 
     pause)
@@ -31,6 +35,6 @@ case "$1" in
         resume
         ;;
     *)
-        playnew
+        playnew $(find "$MUSIC" -type f -not -path "$FILE" | shuf -n1)
         ;;
 esac
