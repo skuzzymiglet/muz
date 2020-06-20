@@ -2,21 +2,35 @@
 # vim: ft=sh
 
 echo "pid: $$"
+stat /tmp/muz-playerpid && PLAYER_PID=$(cat /tmp/muz-playerpid)
+echo $$ > /tmp/muz-pid
 
 MUSIC="$HOME/music"
 
-play(){
+pause(){
+    kill -STOP $PLAYER_PID
+}
+
+resume(){
+    kill -CONT $PLAYER_PID
+}
+
+playnew(){
     FILE=$(find "$MUSIC" -type f -not -path "$FILE" | shuf -n1)
-    mpv --no-video "$FILE"&
-    PLAYER_PID=$!
+    ffplay -nodisp "$FILE"&
+    export PLAYER_PID=$!
+    echo $PLAYER_PID > /tmp/muz-playerpid
     notify-send "Playing $(basename "$FILE")" 
 }
 
-play
-
-while :
-do
-    trap 'kill $PLAYER_PID && play ' HUP
-    trap 'kill $PLAYER_PID; exit' TERM
-    sleep 1
-done
+case "$1" in 
+    pause)
+        pause
+        ;;
+    resume)
+        resume
+        ;;
+    *)
+        playnew
+        ;;
+esac
